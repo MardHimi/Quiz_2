@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>welcome, {{ user_profile.user.username }}</h2>
+    <p>Name: {{ user_profile.user.first_name }}</p>
+    <p>Email: {{ user_profile.user.email }}</p>
+    <p>Balance: {{ user_profile.balance }}</p>
+<h3>
+    <ul>
+        {% for account in accounts %}
+            <li>IBAN: {{ account.iBan }}</li>
+        {% endfor %}
+    </ul>
+</h3>
+<h3>Debts</h3>
+    <ul>
+        {% for Debt in debts %}
+            <li>Amount: ${{ Debt.amount }}</li>
+            <form method="post" action="{% url 'pay-debt' Debt.id %}">
+            {% csrf_token %}
+                <input type="number" name="amount" placeholder="Enter Amount">
+            <button type="submit">Pay Debt</button>
+            </form>
+        {% endfor %}
+    </ul>
+<h3>Add Debt</h3>
+    <form action="{% url 'add-debt' %}" method="post">
+        {% csrf_token %}
+        {{ add_debt_form.as_p }}
+        <button type="submit">Add Debt</button>
+    </form>
+
+</body>
+</html>
